@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>封装优先级队列</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+</body>
+<script>
+    /* 
+        将元素和优先级放在一起封装
+        添加元素时，将插入元素得优先级和队列中已存在得元素进行比较，以获得自己正确的位置
+        优先级：数字越小，优先级越高，越靠近队列头部
+
+        enqueue(element,priority):插入的元素和优先级
+        */
+    function PriorityQueue() {
+
+        function QueueElement(element, priority) {
+            this.element = element
+            this.priority = priority
+        }
+
+        this.items = []
+
+        PriorityQueue.prototype.enqueue = function (element, priority) {
+            var queueElement = new QueueElement(element, priority)
+
+            //如果队列中没有元素，则直接添加元素和优先级信息
+            if (this.items.length == 0) {
+                this.items.push(queueElement)
+            } else {
+                //否则遍历队列中的元素优先级进行比较并插入到队列中
+                var added = false
+                for (var i = 0; i < this.items.length; i++) {
+                    if (queueElement.priority < this.items[i].priority) {
+                        this.items.splice(i, 0, queueElement)
+                        added = true
+                        break
+                    }
+                }
+                //如果遍历完队列没有比要插入的元素的优先级小（即要插入的元素优先级最小），直接添加在队列尾部
+                if (!added) {
+                    this.items.push(queueElement)
+                }
+            }
+        }
+
+        PriorityQueue.prototype.dequeue = function () {
+            return this.items.shift()
+        }
+
+        PriorityQueue.prototype.front = function () {
+            return this.items[0]
+        }
+
+        PriorityQueue.prototype.isEmpty = function () {
+            return (this.items.length == 0)
+        }
+
+        PriorityQueue.prototype.size = function () {
+            return this.items.length
+        }
+        //可利用继承
+        PriorityQueue.prototype.toString = function () {
+            var returnString = ''
+            for (var i = 0; i < this.items.length; i++) {
+                returnString += this.items[i].element + '-' +this.items[i].priority+ ''
+            }
+            return returnString
+        }
+    }  
+
+    var pq = new PriorityQueue()
+    pq.enqueue('abc',10)
+    pq.enqueue('aa',9)
+    pq.enqueue('ccc',12)
+    pq.enqueue('ddd',16)
+    alert(pq)
+
+</script>
+
+</html>

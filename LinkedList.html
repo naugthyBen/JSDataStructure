@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>单向链表</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+</body>
+<script>
+    /* 
+        append(element):向列表尾部添加一个新的项
+        insert（position,element):向列表特定位置插入一个新的项
+        get(position):获取对应位置的元素
+        indexOf(element):查看某个元素的索引号
+        updata(position,elment):修改某个位置的元素
+        removeAt(position):移除特定位置的一个元素
+        remove(element):从列表中移除一项
+        isEmpty():判断列表是否为空
+        size():查看列表长度
+        toString():转换字符串
+        */
+    function LinkedList() {
+        //创建节点
+        function Node(data) {
+            this.data = data
+            this.next = null
+        }
+
+        this.head = null
+        this.length = 0
+
+        LinkedList.prototype.append = function (data) {
+            var newNode = new Node(data)
+            //是否是第一个节点
+            if (this.length == 0) {
+                this.head = newNode
+            } else {
+                //不是第一个节点  
+                var current = this.head
+                //遍历所有元素查找最后一个元素（最后一个元素的next为null）
+                while (current.next) {
+                    current = current.next
+                }
+                current.next = newNode
+            }
+            //添加元素后长度加1
+            this.length += 1
+        }
+
+        LinkedList.prototype.toString = function () {
+            var current = this.head
+            var listString = ''
+            while (current) {
+                listString += current.data + ' '
+                current = current.next
+            }
+            return listString
+        }
+
+        LinkedList.prototype.insert = function (position, data) {
+            //d对position做越界判断
+            if (position < 0 || position > this.length) return false
+
+
+            var newNode = new Node(data)
+
+            //插入位置为头部
+            if (position == 0) {
+                newNode.next = this.head
+                this.head = newNode
+            } else {
+                var index = 0
+                var current = this.head
+                var previos = null
+
+                //while循环
+                // while (index++ < position) {
+                //     previos = current
+                //     current = current.next
+                // }
+                // newNode.next = current
+                // previos.next = newNode
+
+                // for循环
+                for (var i = 0; i < position; i++) {
+                    previous = current
+                    current = current.next
+                }
+                newNode.next = current
+                previous.next = newNode
+            }
+            this.length += 1;
+            return true
+        }
+
+        LinkedList.prototype.get = function (position) {
+            if (position < 0 || position >= this.length) return null
+
+            var current = this.head
+            var index = 0
+            while (index++ < position) {
+                current = current.next
+            }
+            return current.data
+        }
+
+        LinkedList.prototype.indexOf = function (element) {
+            var current = this.head
+            var index = 0
+            while (current) {
+                if (current.data == element) {
+                    return index
+                }
+                current = current.next
+                index += 1
+            }
+
+        }
+
+        LinkedList.prototype.updata = function (position, newData) {
+            if (position < 0 || position >= this.length) return false
+
+            var current = this.head
+            var index = 0
+            while (index++ < position) {
+                current = current.nextt
+            }
+
+            current.data = newData
+        }
+
+        LinkedList.prototype.removeAt = function (position) {
+            if (position < 0 || position >= this.length) return false
+
+            //判断是否删除的是第一个元素
+            var current = this.head
+            if (position == 0) {
+                this.head = this.head.next
+            } else {
+                var index = 0
+                var previous = null
+                while (index++ < position) {
+                    previous = current
+                    current = current.next
+                }
+                previous.next = current.next
+            }
+            this.length -= 1
+            return current.data
+        }
+
+        LinkedList.prototype.remove = function(element){
+            var position = this.indexOf(element)
+            return this.removeAt(position)
+        }
+
+        LinkedList.prototype.isEmpty = function(){
+            return (this.length == 0)
+        }
+
+        LinkedList.prototype.size =function(){
+            return this.length
+        }
+    }
+
+    var list = new LinkedList()
+    list.append('aaa')
+    list.append('bbb')
+    list.append('ccc')
+    list.append('ddd')
+    // alert(list)
+
+    // list.insert(0, 'nnn')
+    // list.insert(3, '333')
+    // list.insert(5, '555')
+    // alert(list)
+
+    // alert(list.length)
+    // alert(list.get(0))
+    // alert(list)
+    // alert(list.get(0))
+    // alert(list.get(7))
+
+
+    // alert(list)
+    // alert(list.indexOf('aaa'))
+
+    // list.updata(0, '000')
+    // list.updata(3, '333')
+
+    // alert(list.removeAt(0))
+    // alert(list)
+
+    // list.remove('aaa')
+    // alert(list)
+    // list.remove('ccc')
+    // alert(list)
+
+    // alert(list.isEmpty())
+    // alert(list.size())
+
+</script>
+
+</html>
